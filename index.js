@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -28,6 +28,17 @@ app.get('/', (req, res) => {
 async function run() {
   try {
     await client.connect();
+    const pawMartDB = client.db('pawMartDB');
+
+    //   ---Listings---
+    const listingCollection = pawMartDB.collection('petListings');
+
+    app.post('/listings', async (req, res) => {
+      const newListings = req.body;
+      const result = await listingCollection.insertOne(newListings);
+      res.send(result);
+    });
+
     await client.db('admin').command({ ping: 1 });
     console.log(
       'Pinged your deployment. You successfully connected to MongoDB!'
