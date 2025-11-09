@@ -33,6 +33,12 @@ async function run() {
     //   ---Listings---
     const listingCollection = pawMartDB.collection('petListings');
 
+    app.get('/listings', async (req, res) => {
+      const cursor = listingCollection.find({});
+      const allValues = await cursor.toArray();
+      res.send(allValues);
+    });
+
     app.post('/listings', async (req, res) => {
       const newListings = req.body;
       const result = await listingCollection.insertOne(newListings);
