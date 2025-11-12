@@ -113,6 +113,22 @@ async function run() {
       }
     });
 
+    app.post('/orders', async (req, res) => {
+      try {
+        const newOrder = req.body;
+
+        if (newOrder.category === 'Pets') {
+          newOrder.quantity = 1;
+        }
+
+        const result = await orderCollection.insertOne(newOrder);
+        res.send(result);
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: 'Failed to place order' });
+      }
+    });
+
     await client.db('admin').command({ ping: 1 });
     console.log(
       'Pinged your deployment. You successfully connected to MongoDB!'
