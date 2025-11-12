@@ -96,6 +96,23 @@ async function run() {
     //   ---Orders---
     const orderCollection = pawMartDB.collection('orders');
 
+    app.get('/myOrders', async (req, res) => {
+      try {
+        const email = req.query.email;
+        const query = {};
+        if (email) {
+          query.email = email;
+        }
+
+        const cursor = orderCollection.find(query);
+        const orders = await cursor.toArray();
+        res.send(orders);
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: 'Failed to fetch orders' });
+      }
+    });
+
     await client.db('admin').command({ ping: 1 });
     console.log(
       'Pinged your deployment. You successfully connected to MongoDB!'
