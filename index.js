@@ -93,6 +93,9 @@ async function run() {
       res.send(result);
     });
 
+    //   ---Orders---
+    const orderCollection = pawMartDB.collection('orders');
+
     await client.db('admin').command({ ping: 1 });
     console.log(
       'Pinged your deployment. You successfully connected to MongoDB!'
