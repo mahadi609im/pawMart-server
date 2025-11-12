@@ -33,8 +33,33 @@ async function run() {
     //   ---Listings---
     const listingCollection = pawMartDB.collection('petListings');
 
+    app.get('/latest_listings', async (req, res) => {
+      const projectFields = {
+        name: 1,
+        price: 1,
+        category: 1,
+        image: 1,
+        location: 1,
+      };
+      const cursor = listingCollection
+        .find({})
+        .sort({ price: 1 })
+        .skip(5)
+        .limit(6)
+        .project(projectFields);
+      const allValues = await cursor.toArray();
+      res.send(allValues);
+    });
+
     app.get('/listings', async (req, res) => {
-      const cursor = listingCollection.find({});
+      console.log(req.query);
+      const email = req.query.email;
+      const query = {};
+      if (email) {
+        query.email = email;
+      }
+
+      const cursor = listingCollection.find(query);
       const allValues = await cursor.toArray();
       res.send(allValues);
     });
