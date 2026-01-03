@@ -28,6 +28,9 @@ async function run() {
     // await client.connect();
     const pawMartDB = client.db('pawMartDB');
 
+    //   ---blog---
+    const blogsCollection = pawMartDB.collection('blogs');
+
     //   ---Listings---
     const listingCollection = pawMartDB.collection('petListings');
 
