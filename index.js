@@ -49,6 +49,11 @@ async function run() {
       res.send(allValues);
     });
 
+    app.get('/blogs', async (req, res) => {
+      const result = await blogsCollection.find().toArray();
+      res.send(result);
+    });
+
     app.get('/listings', async (req, res) => {
       console.log(req.query);
       const email = req.query.email;
